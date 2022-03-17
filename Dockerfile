@@ -1,4 +1,4 @@
-FROM kong/go-plugin-tool:2.0.4-alpine-latest AS builder
+FROM golang:alpine AS builder
 
 RUN apk add --no-cache git gcc libc-dev curl
 RUN mkdir /go-plugins
