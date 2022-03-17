@@ -6,8 +6,8 @@ RUN curl https://raw.githubusercontent.com/Kong/go-plugins/master/go-hello-lm.go
 
 RUN cd /go-plugins && \
     go mod init kong-go-plugin && \
-    go get github.com/Kong/go-pdk && \
-    go get github.com/Kong/go-pluginserver && \
+    go install github.com/Kong/go-pdk && \
+    go install github.com/Kong/go-pluginserver && \
     go build github.com/Kong/go-pluginserver && \
     go build -buildmode plugin go-hello.go
     
