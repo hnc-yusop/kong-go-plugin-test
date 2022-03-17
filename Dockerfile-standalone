@@ -1,0 +1,18 @@
+FROM golang:alpine as builder
+
+RUN apk add --no-cache git gcc libc-dev curl
+RUN mkdir /go-plugins
+RUN curl https://raw.githubusercontent.com/Kong/go-plugins/master/go-hello-lm.go -o /go-plugins/go-hello.go
+
+RUN cd /go-plugins && \
+    go get github.com/Kong/go-pdk && \
+    go mod init kong-go-plugin && \
+    go get -d -v github.com/Kong/go-pluginserver && \
+    go build github.com/Kong/go-pluginserver && \
+    go build -buildmode plugin go-hello.go
+    
+FROM kong:2.4-alpine
+
+RUN mkdir /go-plugins
+COPY --from=builder /go-plugins/go-pluginserver /usr/local/bin/
+COPY --from=builder /go-plugins/go-hello.so /go-plugins
