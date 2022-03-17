@@ -11,7 +11,7 @@ RUN cd /go-plugins && \
     go build github.com/Kong/go-pluginserver && \
     go build -buildmode plugin go-hello.go
     
-FROM kong:2.4-alpine
+FROM kong
 RUN mkdir /go-plugins
 COPY --from=builder /go-plugins/go-pluginserver /usr/local/bin/
 COPY --from=builder /go-plugins/go-hello.so /go-plugins
